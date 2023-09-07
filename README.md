@@ -1,7 +1,13 @@
-# hello-world
-this is a tutorial repository
-## I am Spencer Skidmore
-* CS and Physics major
-* 4th year
-* Tennis player and XC runner
-I am looking forward to working with clients for our group project in this class CS324.
+# CSC324 Individual Project
+this is a repository for my personal project for csc 324
+my dataset for this project can be found at: https://www.kaggle.com/datasets/dissfya/atp-tennis-2013-2023
+## Some catagories in this project include
+* Tournament
+* Date
+* Court (outside/inside)
+* Surface
+* Round
+* Players
+* who won
+* rankings of players
+* the score
