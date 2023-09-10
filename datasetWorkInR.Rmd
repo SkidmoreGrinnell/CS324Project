@@ -1,0 +1,20 @@
+---
+title: "Individual Project"
+output: html_notebook
+author: Spencer Skidmore
+---
+
+
+
+```{r}
+# import magrittr for piping
+library(magrittr)
+library(readr)
+library(dplyr)
+
+#read in data to analyze
+atp_table <- read_csv("atp_tennis.csv")
+head(atp_table)
+
+```
+
