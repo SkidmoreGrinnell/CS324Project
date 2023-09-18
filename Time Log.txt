@@ -5,5 +5,7 @@ starting Github repository
 Setlecting Dataset
 	-20min (8/29/2023)
 	-10min (9/3/2023)
+Describing Dataset
+	-30min (9/17/2023)
 Starting R file
 	-10min (9/10/2023)
