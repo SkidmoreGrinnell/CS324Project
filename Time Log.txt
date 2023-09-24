@@ -7,5 +7,8 @@ Setlecting Dataset
 	-10min (9/3/2023)
 Describing Dataset
 	-30min (9/17/2023)
+	-30min (9/24/2023)
 Starting R file
 	-10min (9/10/2023)
+Making a couple Shiny Apps
+	-5hrs (9/24/2023)
