@@ -12,3 +12,4 @@ Starting R file
 	-10min (9/10/2023)
 Making a couple Shiny Apps
 	-5hrs (9/24/2023)
+	-3.5hrs (10/1/2023)
