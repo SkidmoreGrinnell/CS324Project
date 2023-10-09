@@ -12,4 +12,8 @@ Starting R file
 	-10min (9/10/2023)
 Making a couple Shiny Apps
 	-5hrs (9/24/2023)
+		historgram/ word cloud
 	-3.5hrs (10/1/2023)
+		line graph
+	-7.75hrs (10/8/2023)
+		network

@@ -48,22 +48,51 @@ function(input, output, session) {
     
   })
   
-  output$rank_trends <- renderPlot({
-    player_name <- input$players
-    atp_player_results <- atp_table %>%
-      filter(Player_1 == player_name |
-               Player_2 == player_name) %>%
-      select(Rank_1 | Rank_2 | Date | Player_1 | Player_2) %>%
-      mutate(player_ranking = 
-               ifelse(Player_1 == player_name, Rank_1, Rank_2))
-    
-    atp_player_results$Date <- as.Date(atp_player_results$Date)
-    
-    atp_player_results %>%
-      ggplot( aes(x=Date, y=player_ranking)) +
-      geom_line() +
-      geom_point() +
-      scale_y_reverse()
+  output$rank_trends <- renderPlotly({
+    req(input$players)
+    player_results <- list()
+    for(player in input$players){
+      # grab the relevant player ratings
+      atp_player_result <- atp_combined %>%
+        filter(Player_1 == player) %>%
+        # grab names ranks and dates
+        select(Rank_1 | Rank_2 | Date | Player_1 | Player_2)%>%
+        rename(Player = Player_1)
+      # add the player result to the list
+      player_results[[length(player_results)+1]] = atp_player_result
+    }
+    # https://www.geeksforgeeks.org/plot-lines-from-a-list-of-dataframes-using-ggplot2-in-r/
+    p <- ggplot(bind_rows(player_results, .id="data_frame"),
+                aes(x=Date, y=Rank_1)) +
+      geom_line(aes(color = Player)) +
+      scale_y_reverse() +
+      labs(y = "Ranking", title = "Player Ranking over Time")
+    ggplotly(p)
   })
+  output$network <- renderPlotly({
+    req(input$network_player)
+    
+    player = input$network_player
+    atp_player_result <- atp_combined %>%
+      filter(Player_1 == player) %>%
+      # grab names ranks and dates
+      select(Player_2)
+    #make a data frame with the frequency of occurrences
+    network_table_df <- atp_player_result %>%
+      table(dnn = list("name")) %>%
+      as.data.frame(responseName = "freq")
+    #order by frequency
+    network_table_df <- network_table_df[order(network_table_df$freq, decreasing = TRUE),]
+    simple_edge_df <- data.frame(
+      from = rep(player,length(network_table_df$name)),
+      to = network_table_df$name,
+      weight = network_table_df$freq
+    )
+    
+    net <- graph_from_data_frame(simple_edge_df)
+    p <- ggnet2(simplify(net), size = 3, label = TRUE)
+    ggplotly(p)
+  })
+  
 }
 

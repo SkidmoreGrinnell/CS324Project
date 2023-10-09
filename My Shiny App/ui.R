@@ -65,16 +65,43 @@ navbarPage( theme = shinytheme("darkly"),
   
   tabPanel("Player ranking over time",
            sidebarPanel(
-             selectInput(inputId = "players",
-                         label = "Player",
-                         choices = player_selections$name,
-                         selected = "Djokovic N."),
+             # https://stackoverflow.com/questions/62716572/selectinput-category-selection
+             # Stéphane Laurent's answer
+             # slightly modified for my data
+             selectizeInput(inputId = "players",
+                            label = "Choose a player:",
+                            choices = player_selections,
+                            multiple = TRUE, 
+                            selected = "Djokovic N.",
+                            options = list(
+                              onInitialize = I(onInitialize)
+                            )
+             )
+             
            ),
            mainPanel(
-             plotOutput(outputId = "rank_trends", height = "300px"),
+             plotlyOutput(outputId = "rank_trends", height = "300px"),
            )
            
-  ) #end or line plot
+  ), #end or line plot
+  
+  tabPanel("Player Selection",
+           # https://stackoverflow.com/questions/62716572/selectinput-category-selection
+           # Stéphane Laurent's answer
+           # slightly modified for my data
+           selectizeInput(inputId = "network_player",
+                          label = "Choose a player:",
+                          choices = player_selections,
+                          multiple = FALSE, 
+                          options = list(
+                            onInitialize = I(onInitialize)
+                          )
+           ),
+           mainPanel(
+             plotlyOutput(outputId = "network", width = Inf),
+           )
+           
+  )
   
 )
 
