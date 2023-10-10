@@ -131,18 +131,84 @@ player = "Djokovic N."
     )
     
     net <- graph_from_data_frame(simple_edge_df)
-    net %v% "weight" = ifelse(net %v% "phono" == "vowel", "steelblue", "tomato")
-    p <- ggnet2(simplify(net), size = simple_edge_df$weight, label = TRUE)
-    ggplotly(p)
+    p <- ggnet2(simplify(net), label = TRUE)
+    ggplotly(p) %>% layout(xaxis = list(visible = FALSE),
+                           yaxis = list(visible = FALSE))
+```
+```{r}
+simplify(net)
 ```
 ```{r}
 rep(player,length(atp_player_result$Player_2))
 ```
-
+lets see if we can make
 ```{r}
-nodes <- data.frame(id = unique(atp_combined$Player_1))
-edges <- data.frame(from = atp_table$Player_1, to = atp_table$Player_2)
-visNetwork(nodes, edges, width = "100%")
+#read in data to analyze
+old_atp_df <- read_csv("Tennis Data.csv")
+head(old_atp_df)
+```
+```{r}
+library(dplyr)
+#old_tournament_locations <- old_atp_df[!duplicated(old_atp_df$Tournament),]
+new_tournaments <- atp_table[!duplicated(atp_table$Tournament), "Tournament"]
+#new_tournaments$Tournament %in%old_tournament_locations$Tournament
+#old_tournament_locations$Tournament %in% new_tournaments$Tournament
+new_tournaments
+```
+```{r}
+library(maps)
+#map.cities(old_tournament_locations$Location)
+world.cities
+#old_tournament_locations$Location[which(old_tournament_locations$Location %in% world.cities$name)]
+
+world.cities[which(world.cities$name %in% old_tournament_locations$Location),]
+
+```
+```{r}
+locations <- world.cities[which(world.cities$name %in% old_tournament_locations$Location),]
+fig <- plot_geo(locations, lat = ~lat, lon = ~long)
+
+fig <- fig %>% add_markers(
+
+    text = ~paste(airport, city, state, paste("Arrivals:", cnt), sep = "<br />"),
+
+    color = ~cnt, symbol = I("square"), size = I(8), hoverinfo = "text"
+
+  )
+fig
+```
+```{r}
+
+result <- merge(old_tournament_locations,
+      world.cities, by.x = "Location", by.y = "name") 
+
+#with(world.data, lat[match(old_tournament_locations$Location, name])
 ```
 
+```{r}
+player = "Djokovic N."
+tournament = atp_combined$Tournament[1]
+atp_player_result <- atp_combined %>%
+      filter(Player_1 == player & Tournament == tournament) %>%
+      select(Player_2)
+atp_player_result
+
+network_table_df <- atp_player_result %>%
+      table(dnn = list("name")) %>%
+      as.data.frame(responseName = "freq")
+    network_table_df <- network_table_df[order(network_table_df$freq, decreasing = TRUE),]
+    
+edge_df <- data.frame(
+      from = rep(player,length(network_table_df$name)),
+      to = network_table_df$name,
+      weight = network_table_df$freq
+    )
+
+net <- graph_from_data_frame(edge_df)
+    p <- ggnet2(simplify(net), size = 3, label = TRUE)
+    p <- ggplotly(p) %>% layout(xaxis = list(visible = FALSE),
+                                yaxis = list(visible = FALSE))
+    p
+    
+```
 

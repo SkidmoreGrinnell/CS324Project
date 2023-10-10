@@ -17,3 +17,7 @@ Making a couple Shiny Apps
 		line graph
 	-7.75hrs (10/8/2023)
 		network
+	-5.5hrs	 (10/9/2023)
+		network, map, and documentation
+	-1.5hrs	 (10/10/2023)
+		network, documentation

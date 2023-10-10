@@ -33,6 +33,9 @@ atp_table_swapped <- atp_table %>% rename(Player_1 = Player_2,
 atp_combined <- rbind(atp_table, atp_table_swapped)
 atp_combined <- atp_combined[order(atp_combined$Date),]
 
+# make a list with each tournament name
+new_tournaments <- atp_table[!duplicated(atp_table$Tournament), "Tournament"]
+
 player_selections <<- atp_combined$Player_1 %>%
   # used https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/table
   # need the column name to be the same every time
@@ -41,25 +44,8 @@ player_selections <<- atp_combined$Player_1 %>%
   .[order(.$freq, decreasing = TRUE),]
 
 
-# https://stackoverflow.com/questions/62716572/selectinput-category-selection
-# Stéphane Laurent
-# https://shiny.posit.co/r/reference/shiny/latest/updateselectinput
-# for context (lets me know onInitialize is running as JavaScript)
-onInitialize <- "
-function(){
-  var select = this.$input[0];
-  this.$dropdown_content.on('mousedown', function(e){
-    e.preventDefault(); 
-    return false;
-  }).on('click', '.optgroup-header', function(e){
-    var options = $(this).parent().find('.option');
-    var items = [];
-    options.each(function(i, opt){items.push($(opt).data('value'));});
-    var selections = select.selectize.items;
-    select.selectize.setValue(items.concat(selections));
-  });
-}
-"
+
+
 
 
 # Using "memoise" to automatically cache the results

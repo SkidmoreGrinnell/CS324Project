@@ -5,18 +5,35 @@ library(shinythemes)
 
 navbarPage( theme = shinytheme("darkly"),
             "ATP match results 2013-2023",
-           # adding that custom CSS
+           # adding that custom CSS to make the title look fun
            tags$head(
              tags$link(rel = "stylesheet", type = "text/css", href = "font_change.css")
-           ),       
-  
-  # tab title
+           ),  
+  # Home panel for introduction
+  tabPanel("Home",
+           h2("Welcome to my app \"ATP match results 2013-2023\""),
+           tags$pre(p("This app visualizes the last 10 years of results from the ATP or\nAmerican Tennis Professional tour. You are welcome to browse:\n\n
+           The Word Cloud 
+             where you can find the most prolific players and the largest tournaments
+             
+           The Histogram where you can find out
+             the rankings of the people most commonly accepted into ATP tournaments
+           
+           The Player rankings over time
+              where you can select one or many players and look at their respective rankings
+           
+           Who Played Who 
+              where you can see what players have played each other at particular tournaments
+             \n\n-Spencer Skidmore"))
+           
+           ),
+  # Word Cloud Panel
   tabPanel("Word Cloud",
   
     sidebarLayout(
-      # Sidebar with a slider and selection inputs
       sidebarPanel(
-        selectInput("selection", "Choose a category:",
+        # select players or tournament names
+        selectInput("selection", "Tournaments or Players:",
                     choices = selections),
         actionButton("update", "Change"),
         hr(),
@@ -39,8 +56,11 @@ navbarPage( theme = shinytheme("darkly"),
            sidebarPanel(
                 selectInput(inputId = "n_breaks",
                             label = "Number of bins in histogram (approximate):",
-                            choices = c(10, 20, 35, 50),
+                            choices = c(10, 20, 35, 50, 70, 100, 200),
                             selected = 20),
+                sliderInput(inputId = "max_ranking",
+                            label = "Maximum ranking of players displayed:",
+                            min = 250, max = 2500, value = 2250, step = 250),
                 
                 checkboxInput(inputId = "individual_obs",
                               label = strong("Show individual observations"),
@@ -65,17 +85,12 @@ navbarPage( theme = shinytheme("darkly"),
   
   tabPanel("Player ranking over time",
            sidebarPanel(
-             # https://stackoverflow.com/questions/62716572/selectinput-category-selection
-             # Stéphane Laurent's answer
-             # slightly modified for my data
+             # selects using a text and click input
              selectizeInput(inputId = "players",
                             label = "Choose a player:",
                             choices = player_selections,
                             multiple = TRUE, 
-                            selected = "Djokovic N.",
-                            options = list(
-                              onInitialize = I(onInitialize)
-                            )
+                            selected = "Djokovic N."
              )
              
            ),
@@ -85,19 +100,24 @@ navbarPage( theme = shinytheme("darkly"),
            
   ), #end or line plot
   
-  tabPanel("Player Selection",
+  tabPanel("Who Played Who",
            # https://stackoverflow.com/questions/62716572/selectinput-category-selection
            # Stéphane Laurent's answer
            # slightly modified for my data
            selectizeInput(inputId = "network_player",
                           label = "Choose a player:",
                           choices = player_selections,
-                          multiple = FALSE, 
-                          options = list(
-                            onInitialize = I(onInitialize)
-                          )
+                          multiple = FALSE
+           ),
+           
+           
+           selectizeInput(inputId = "network_tournament",
+                          label = "Choose a tournament:",
+                          choices = new_tournaments,
+                          multiple = FALSE,
            ),
            mainPanel(
+             #show network graph
              plotlyOutput(outputId = "network", width = Inf),
            )
            
