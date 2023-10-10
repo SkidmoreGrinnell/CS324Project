@@ -48,7 +48,8 @@ function(input, output, session) {
          breaks = as.numeric(input$n_breaks),
          xlab = "Rank of player",
          xlim = c(0,as.numeric(input$max_ranking)),
-         main = "What are rankings at ATP tournaments")
+         main = "What are rankings at ATP tournaments",
+         col = "lightgreen")
     
     # show how individuals appear on the graph according to rank
     if (input$individual_obs) {
