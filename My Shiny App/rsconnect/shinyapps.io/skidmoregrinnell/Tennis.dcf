@@ -1,0 +1,12 @@
+name: Tennis
+title: Tennis
+username: skidmoregrinnell
+account: skidmoregrinnell
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 10156375
+bundleId: 7788691
+url: https://skidmoregrinnell.shinyapps.io/Tennis/
+version: 1
+asMultiple: FALSE
+asStatic: FALSE

@@ -18,6 +18,47 @@ head(atp_table)
 
 ```
 ```{r}
+library(ggplot2)
+library(plotly)
+time_data <- c(15/60,15/60,20/60,10/60,30/60,30/60,
+               10/60,5,3.5,7.75,5.5,7.5)
+date_data <- c("8/29/2023", "9/7/2023",
+               "8/29/2023", "9/3/2023",
+               "9/17/2023", "9/24/2023",
+               "9/10/2023", "9/24/2023",
+               "10/1/2023", "10/8/2023",
+               "10/9/2023", "10/10/2023")
+duty <- c("starting Github repository",
+          "starting Github repository",
+          "Selecting Dataset",
+          "Selecting Dataset",
+          "Describing Dataset",
+          "Describing Dataset",
+          "Starting R file",
+          paste("Making Shiny App",
+            "histogram", "word cloud", sep = "\n"),
+          paste("Making Shiny App", "line graph"),
+          paste("Making Shiny App", "network", 
+            sep = "\n"),
+          paste("Making Shiny App", "network",
+            "map testing", "documentation", 
+            sep = "\n"),
+          paste("Making Shiny App", "network",
+            "extra data", "documentation",
+            sep = "\n"))
+date_data %<>% as.Date(format="%m/%d/%Y")
+time_log_data <- data.frame(time_data, date_data, duty)
+time_log_data <- time_log_data[order(time_log_data$date_data),]
+p <- ggplot(time_log_data, aes(y=time_data, x=date_data, label = duty))+
+  geom_bar(stat = "identity", fill = "lightgreen")+
+  xlab("Date")+
+  ylab("Hrs Spent") + 
+  scale_x_date(date_breaks = "7 day")+
+  scale_x_date(date_minor_breaks = "1 day")
+ggplotly(p)
+```
+
+```{r}
 #plotly tests
 atp_dated <- atp_table %>% filter(Date < "2013-01-01")
 plot_ly(atp_dated, x = ~Rank_1, y = ~Rank_2, 

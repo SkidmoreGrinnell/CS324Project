@@ -20,8 +20,8 @@ navbarPage( theme = shinytheme("darkly"),
              where you can find the most prolific players and the largest tournaments
              here I have an additional data set with 2000-2014 results
              
-           The Histogram where you can find out
-             the rankings of the people most commonly accepted into ATP tournaments
+           The Histogram 
+             where you can find out the rankings of the people most commonly accepted into ATP tournaments
            
            The Player rankings over time
               where you can select one or many players and look at their respective rankings
@@ -34,6 +34,8 @@ navbarPage( theme = shinytheme("darkly"),
             
             
             ### WORD CLOUD ###
+            # design elements came from reference [6]
+            # specifically the word cloud example from the shiny gallery
             tabPanel("Word Cloud",
                      h2("Biggest Tournaments and Tournaments in the ATP Tour"),
                      sidebarLayout(
@@ -65,6 +67,8 @@ navbarPage( theme = shinytheme("darkly"),
             
             
             ### HISTOGRAM ###
+            # design elements came from reference [6]
+            # specifically the histogram example from the shiny gallery
             tabPanel("Histogram",
                      h2("What Ranks get to Play in ATP Tournaments"),
                      sidebarPanel(

@@ -16,24 +16,23 @@ library(ggplot2)
 library(plotly)
 library(GGally)
 library(igraph)
-library(networkD3)
 
 # The list of valid selections for the word cloud
 selections <<- list("Top ATP Tournaments by match count" = "tournaments",
                "Top players by total amount of appearances (2013-2023)" = "players",
                "Top past players by total amount of appearances (2000-2014)" = "old_players")
 
-# make a list of the top players ordered by frequency to allow for ranking viewing
-
-# first make a table with all players in both the Winner and Loser list
-# this makes it easier to grab info just from the Winner column
+# make a list of the old top players ordered by frequency to allow for ranking viewing
+#     first make a table with all players in both the Winner and Loser list
+#     this makes it easier to grab info just from the Winner column
 old_atp_table_swapped <- old_atp_table %>% rename(Winner = Loser, 
                                           Loser = Winner)
 old_atp_combined <- rbind(old_atp_table, old_atp_table_swapped)
-old_atp_combined <- atp_combined[order(old_atp_combined$Date),]
+old_atp_combined <- old_atp_combined[order(old_atp_combined$Date),]
 
-# first make a table with all old players in both the Player_1 and Player_2 lists
-# this makes it easier to grab info just from the Player_1 column
+# first make a table with new players in both the Player_1 and Player_2 lists
+#     this makes it easier to grab info just from the Player_1 column
+#     use same steps as before but matching 1 to 2 for all results
 atp_table_swapped <- atp_table %>% rename(Player_1 = Player_2, 
                                           Player_2 = Player_1,
                                           Rank_1 = Rank_2,
@@ -50,6 +49,7 @@ new_tournaments <- atp_table[!duplicated(atp_table$Tournament), "Tournament"]
 
 player_selections <<- atp_combined$Player_1 %>%
   # referenced https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/table
+  # reference [7] in documentation
   # need the column name to be the same every time
   table(dnn = list("name")) %>%
   as.data.frame(responseName = "freq") %>%
@@ -60,6 +60,8 @@ player_selections <<- atp_combined$Player_1 %>%
 
 
 
+# design elements came from reference [6]
+# specifically the word cloud example from the shiny gallery
 # Using "memoise" to automatically cache the results
 getTermMatrix <- memoise(function(selection) {
   

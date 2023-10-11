@@ -20,6 +20,8 @@ function(input, output, session) {
   
   ### WORD CLOUD ###
   # this renders the word cloud plot
+  # design elements came from reference [6]
+  # specifically the word cloud example from the shiny gallery
   output$wordcloud <- renderPlot({
     # grab the terms from the terms() in global
     v <- terms()
@@ -35,6 +37,8 @@ function(input, output, session) {
   
   ### HISTOGRAM ###
   #make the histogram
+  # design elements came from reference [6]
+  # specifically the histogram example from the shiny gallery
   output$histogram <- renderPlot({
     
     # make a graph with a variable number of bins using
@@ -48,6 +52,7 @@ function(input, output, session) {
          breaks = as.numeric(input$n_breaks),
          xlab = "Rank of player",
          xlim = c(0,as.numeric(input$max_ranking)),
+         ylab = "Denisty of Results",
          main = "What are rankings at ATP tournaments",
          col = "lightgreen")
     
@@ -87,6 +92,8 @@ function(input, output, session) {
     }
     # help from:
     #   https://www.geeksforgeeks.org/plot-lines-from-a-list-of-dataframes-using-ggplot2-in-r/
+    #   reference [1] in documentation
+    #   showed how to get the rows from a list of results
     # make a data frame from the rows
     # make lines corresponding to a different color depending on the player
     # make the scale reversed as rank 1 should be higher
@@ -136,6 +143,7 @@ function(input, output, session) {
     #     turn off hover insights because info is not helpful
     #   helpful insight from:
     #       https://rdrr.io/github/briatte/ggnet/f/vignettes/ggnet2.Rmd
+    #       reference [4] in documentation
     net <- graph_from_data_frame(edge_df)
     p <- ggnet2(simplify(net), size = 1, label = TRUE, node.color = "lightgreen",
                 edge.color = "blue", edge.size = .1)
