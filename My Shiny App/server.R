@@ -132,11 +132,17 @@ function(input, output, session) {
     # make a network graph from the data frame 
     #     create a plot from simple network (only one connection)
     #     add labels to see player names
-    #     
+    #     adjust the x and y axis to always fit the names on the plots
+    #     turn off hover insights because info is not helpful
+    #   helpful insight from:
+    #       https://rdrr.io/github/briatte/ggnet/f/vignettes/ggnet2.Rmd
     net <- graph_from_data_frame(edge_df)
-    p <- ggnet2(simplify(net), size = 3, label = TRUE)
-    fig <- ggplotly(p) %>% layout(xaxis = list(visible = FALSE),
-                                yaxis = list(visible = FALSE),
+    p <- ggnet2(simplify(net), size = 1, label = TRUE, node.color = "lightgreen",
+                edge.color = "blue", edge.size = .1)
+    fig <- ggplotly(p) %>% layout(xaxis = list(visible = FALSE,
+                                               range = list(-.15, 1.15)),
+                                yaxis = list(visible = FALSE,
+                                             range = list(-.1, 1.1)),
                                 hovermode = FALSE)
   })
   

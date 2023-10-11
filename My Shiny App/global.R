@@ -16,6 +16,7 @@ library(ggplot2)
 library(plotly)
 library(GGally)
 library(igraph)
+library(networkD3)
 
 # The list of valid selections for the word cloud
 selections <<- list("Top ATP Tournaments by match count" = "tournaments",
