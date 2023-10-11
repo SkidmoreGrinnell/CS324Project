@@ -1,8 +1,10 @@
 library(readr)
 
 # load our data into the app
+#   was receiving a warning when reading the older data but it was not affecting
+#   the results
 atp_table <- read_csv("atp_tennis.csv", show_col_types = FALSE)
-old_atp_table <- read_csv("Tennis Data.csv", show_col_types = FALSE)
+old_atp_table <- suppressWarnings(read_csv("Tennis Data.csv", show_col_types = FALSE))
 
 #load in all necessary libraries for the app 
 library(magrittr)
@@ -16,7 +18,7 @@ library(GGally)
 library(igraph)
 
 # The list of valid selections for the word cloud
-selections <<- list("Top ATP Tournaments by match count" = "tournamnets",
+selections <<- list("Top ATP Tournaments by match count" = "tournaments",
                "Top players by total amount of appearances (2013-2023)" = "players",
                "Top past players by total amount of appearances (2000-2014)" = "old_players")
 
